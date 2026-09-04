@@ -1,5 +1,62 @@
+import { useEffect, useState } from "react";
+import { HashRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { MotionConfig } from "framer-motion";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import TicketModal from "./components/TicketModal";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Academy from "./pages/Academy";
+import Media from "./pages/Media";
+import Contacts from "./pages/Contacts";
+import { TicketContext } from "./context";
+
+function ScrollManager() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      const t = setTimeout(() => {
+        document.getElementById(hash.replace("#", ""))?.scrollIntoView({ block: "start" });
+      }, 150);
+      return () => clearTimeout(t);
+    }
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [pathname, hash]);
+  return null;
+}
+
+function Shell() {
+  const [ticketsOpen, setTicketsOpen] = useState(false);
+
+  return (
+    <TicketContext.Provider value={() => setTicketsOpen(true)}>
+      <div className="min-h-screen bg-void text-snow font-body antialiased">
+        <ScrollManager />
+        <div className="noise-overlay" aria-hidden="true" />
+        <Navbar />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/academy" element={<Academy />} />
+            <Route path="/media" element={<Media />} />
+            <Route path="/contacts" element={<Contacts />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+        <Footer />
+        <TicketModal open={ticketsOpen} onClose={() => setTicketsOpen(false)} />
+      </div>
+    </TicketContext.Provider>
+  );
+}
+
 export default function App() {
   return (
-    <div/>
+    <MotionConfig reducedMotion="user">
+      <HashRouter>
+        <Shell />
+      </HashRouter>
+    </MotionConfig>
   );
 }

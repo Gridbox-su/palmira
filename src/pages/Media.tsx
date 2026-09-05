@@ -287,7 +287,7 @@ export default function Media() {
   const reduce = useReducedMotion();
   return (
     <>
-      <section className="relative pt-32 md:pt-40 pb-10 overflow-hidden border-b border-white/10 bg-coal">
+      <section className="relative pt-10 md:pt-14 pb-10 overflow-hidden border-b border-white/10 bg-coal">
         <div className="floodlight" style={{ top: "-30vh", left: "35%" }} />
         <div className="absolute left-0 top-1/2 -translate-y-1/2 font-display uppercase font-bold text-[16vw] leading-none text-outline-neon opacity-[0.06] select-none pointer-events-none" aria-hidden="true">
           Медиа

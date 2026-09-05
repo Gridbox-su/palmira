@@ -8,7 +8,7 @@ import { IMG, branches, scheduleGroups, youthCoaches } from "../data/club";
 function AcademyHero({ goForm }: { goForm: () => void }) {
   const reduce = useReducedMotion();
   return (
-    <section className="relative pt-32 md:pt-40 pb-20 overflow-hidden border-b border-white/10">
+    <section className="relative pt-10 md:pt-14 pb-20 overflow-hidden border-b border-white/10">
       <div className="absolute inset-0">
         <img src={IMG.academy} alt="Тренировка академии" className="w-full h-full object-cover opacity-45" />
         <div className="absolute inset-0 bg-gradient-to-b from-void/80 via-void/60 to-void" />

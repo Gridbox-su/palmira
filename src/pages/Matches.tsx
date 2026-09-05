@@ -8,7 +8,7 @@ import { matches, upcomingMatches } from "../data/club";
 function MatchesHero() {
   const reduce = useReducedMotion();
   return (
-    <section className="relative pt-36 md:pt-44 pb-14 overflow-hidden border-b border-white/10 bg-coal">
+    <section className="relative pt-10 md:pt-14 pb-14 overflow-hidden border-b border-white/10 bg-coal">
       <div className="absolute inset-0 z-0" aria-hidden="true">
         <img
           src="https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1800&q=80"

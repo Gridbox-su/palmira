@@ -36,7 +36,7 @@ function Shell() {
         <ScrollManager />
         <div className="noise-overlay" aria-hidden="true" />
         <Navbar />
-        <main>
+        <main className="pt-20">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />

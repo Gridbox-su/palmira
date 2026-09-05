@@ -34,7 +34,7 @@ export default function Contacts() {
 
   return (
     <>
-      <section className="relative pt-32 md:pt-40 pb-14 overflow-hidden border-b border-white/10 bg-coal">
+      <section className="relative pt-10 md:pt-14 pb-14 overflow-hidden border-b border-white/10 bg-coal">
         <div className="floodlight" style={{ top: "-30vh", left: "30%" }} />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="line-mask">

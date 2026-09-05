@@ -20,7 +20,7 @@ const tabs = [
 function PageHeader() {
   const reduce = useReducedMotion();
   return (
-    <section className="relative pt-36 md:pt-44 pb-14 overflow-hidden border-b border-white/10 bg-coal">
+    <section className="relative pt-10 md:pt-14 pb-14 overflow-hidden border-b border-white/10 bg-coal">
       {/* фоновое изображение + тёмный overlay для читаемости */}
       <div className="absolute inset-0 z-0" aria-hidden="true">
         <img src={IMG.hero} alt="" className="w-full h-full object-cover opacity-55" />
@@ -87,7 +87,7 @@ function AnchorBar() {
   };
 
   return (
-    <div className="sticky top-72 z-30 bg-void/95 border-b border-white/10">
+    <div className="sticky top-20 z-30 bg-void/95 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex gap-1 overflow-x-auto py-3 -mx-1 px-1">
           {tabs.map((t, i) => (

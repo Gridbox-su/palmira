@@ -12,7 +12,7 @@ function LegalLayout({ kicker, title, updated, sections }: { kicker: string; tit
   const reduce = useReducedMotion();
   return (
     <>
-      <section className="relative pt-36 md:pt-44 pb-14 overflow-hidden border-b border-white/10 bg-coal">
+      <section className="relative pt-10 md:pt-14 pb-14 overflow-hidden border-b border-white/10 bg-coal">
         <div className="floodlight" style={{ top: "-30vh", left: "30%" }} />
         <div className="absolute right-0 top-0 font-display uppercase font-bold text-[14vw] leading-none text-outline-neon opacity-[0.05] select-none pointer-events-none" aria-hidden="true">
           §

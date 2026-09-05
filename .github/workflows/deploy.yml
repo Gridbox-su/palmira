@@ -1,0 +1,62 @@
+# ============================================================
+# CI/CD: сборка Vite и деплой папки dist на GitHub Pages
+# Триггер: push в main (или master) + ручной запуск
+# Требуется: Settings → Pages → Source: GitHub Actions
+# ============================================================
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main, master]
+  # Возможность запустить деплой вручную из вкладки Actions
+  workflow_dispatch:
+
+# Права для деплоя на GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Одновременно только один деплой (новый ждёт, не отменяя текущий)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Сборка (npm run build)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout репозитория
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm # кэш node_modules по package-lock.json
+
+      - name: Установка зависимостей
+        run: npm ci
+
+      # --base=./ делает пути к ассетам относительными —
+      # сайт будет работать в подкаталоге GitHub Pages (username.github.io/repo)
+      - name: Сборка проекта
+        run: npm run build -- --base=./
+
+      - name: Публикация артефакта (папка dist)
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Деплой на GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Деплой
+        id: deployment
+        uses: actions/deploy-pages@v4

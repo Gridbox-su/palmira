@@ -87,7 +87,7 @@ function AnchorBar() {
   };
 
   return (
-    <div className="sticky top-24 z-30 bg-void/95 border-b border-white/10">
+    <div className="sticky top-28 z-30 bg-void/95 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex gap-1 overflow-x-auto py-3 -mx-1 px-1">
           {tabs.map((t, i) => (

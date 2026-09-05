@@ -67,14 +67,10 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`flex items-center justify-between transition-all duration-500 ${scrolled ? "h-16" : "h-20"}`}>
+          <div className={`flex items-center justify-between transition-all duration-500 ${scrolled ? "h-24" : "h-28"}`}>
             {/* Логотип */}
-            <Link to="/" className="flex items-center gap-3 group shrink-0">
-              <ClubLogo className={`object-contain transition-all duration-500 ${scrolled ? "w-10 h-10" : "w-12 h-12"}`} />
-              <div className="leading-none hidden sm:block">
-                <div className="font-display font-semibold uppercase tracking-[0.14em] text-sm text-white">Северная</div>
-                <div className="font-display font-semibold uppercase tracking-[0.34em] text-sm text-neon">Пальмира</div>
-              </div>
+            <Link to="/" className="flex items-center group shrink-0" aria-label="ЖФК Северная Пальмира — на главную">
+              <ClubLogo className={`object-contain transition-all duration-500 ${scrolled ? "w-20 h-20" : "w-24 h-24"}`} />
             </Link>
 
             {/* Навигация (desktop) */}

@@ -13,16 +13,22 @@ const navLinks = [
 ];
 
 export default function Footer() {
-  const [email, setEmail] = useState("");
-  const [subscribed, setSubscribed] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "" });
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
 
-  const subscribe = (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim().length > 3) {
-      setSubscribed(true);
-      setEmail("");
-      setTimeout(() => setSubscribed(false), 4000);
+    if (!form.name.trim() || !form.phone.trim()) {
+      setError("Заполните имя и телефон.");
+      return;
     }
+    setError("");
+    setSent(true);
+    setTimeout(() => {
+      setSent(false);
+      setForm({ name: "", phone: "" });
+    }, 4000);
   };
 
   return (
@@ -55,7 +61,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 grid gap-12 lg:grid-cols-[1.3fr_0.8fr_1fr_1.2fr]">
         <div>
           <div className="flex items-center gap-4 mb-5">
-            <ClubLogo className="w-20 h-20" />
+            <ClubLogo className="w-40 h-40" />
             <div>
               <div className="font-display uppercase font-semibold tracking-[0.12em] text-lg leading-tight">Северная<br />Пальмира</div>
               <div className="text-[10px] uppercase tracking-[0.28em] text-neon mt-1">ЖФК · Санкт-Петербург</div>
@@ -108,29 +114,36 @@ export default function Footer() {
         </div>
 
         <div>
-          <h4 className="font-display uppercase tracking-[0.25em] text-sm mb-5 text-white">Клубная рассылка</h4>
-          <p className="text-sm text-steel mb-4">Билеты, новости и эксклюзивы — раз в неделю, без спама.</p>
-          {subscribed ? (
+          <h4 className="font-display uppercase tracking-[0.25em] text-sm mb-5 text-white">Получить консультацию</h4>
+          <p className="text-sm text-steel mb-4">Билеты, абонементы, партнёрство — перезвоним в течение рабочего дня.</p>
+          {sent ? (
             <div className="flex items-center gap-3 border border-neon bg-neon/10 px-4 py-3.5 text-sm text-neon">
-              <IconCheck className="w-5 h-5" /> Вы подписаны! Проверьте почту.
+              <IconCheck className="w-5 h-5" /> Заявка отправлена! Скоро свяжемся.
             </div>
           ) : (
-            <form onSubmit={subscribe} className="flex">
+            <form onSubmit={submit} className="space-y-3">
               <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Ваш e-mail"
-                className="field !border-r-0 flex-1 min-w-0"
-                aria-label="E-mail для рассылки"
+                type="text"
+                value={form.name}
+                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
+                placeholder="Имя"
+                className="field"
+                aria-label="Имя"
               />
+              <input
+                type="tel"
+                value={form.phone}
+                onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
+                placeholder="Телефон"
+                className="field"
+                aria-label="Телефон"
+              />
+              {error && <p className="text-xs text-neon">{error}</p>}
               <button
                 type="submit"
-                aria-label="Подписаться"
-                className="bg-neon px-4 grid place-items-center text-white transition-colors duration-300 hover:bg-[#e01f5c]"
+                className="w-full flex items-center justify-center gap-2 bg-neon text-white font-display uppercase tracking-[0.16em] text-xs py-3.5 transition-colors duration-300 hover:bg-[#e01f5c]"
               >
-                <IconArrow className="w-5 h-5" />
+                Отправить заявку <IconArrow className="w-4 h-4" />
               </button>
             </form>
           )}
@@ -145,8 +158,8 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-[11px] text-steel/70 tracking-wide">© 2025 ЖФК «Северная Пальмира». Все права защищены.</p>
         <div className="flex items-center gap-6 text-[11px] uppercase tracking-[0.14em] text-steel/70">
-          <Link to="/contacts" className="hover:text-neon transition-colors">Политика конфиденциальности</Link>
-          <Link to="/contacts" className="hover:text-neon transition-colors">Регламент стадиона</Link>
+          <Link to="/privacy" className="hover:text-neon transition-colors">Политика конфиденциальности</Link>
+          <Link to="/rules" className="hover:text-neon transition-colors">Регламент стадиона</Link>
           <Link to="/about" className="hover:text-neon transition-colors">Вакансии</Link>
         </div>
       </div>

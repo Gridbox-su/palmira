@@ -9,6 +9,8 @@ import About from "./pages/About";
 import Academy from "./pages/Academy";
 import Media from "./pages/Media";
 import Contacts from "./pages/Contacts";
+import Matches from "./pages/Matches";
+import { PrivacyPage, RulesPage } from "./pages/Legal";
 import { TicketContext } from "./context";
 
 function ScrollManager() {
@@ -41,6 +43,9 @@ function Shell() {
             <Route path="/academy" element={<Academy />} />
             <Route path="/media" element={<Media />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="/matches" element={<Matches />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/rules" element={<RulesPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>

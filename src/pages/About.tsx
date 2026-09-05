@@ -4,7 +4,7 @@ import { Reveal, SectionHeading } from "../components/Reveal";
 import ClubLogo from "../components/ClubLogo";
 import { IconArrow, IconCheck, IconClose, IconMail, IconPhone, IconShield, IconWhistle } from "../components/icons";
 import {
-  cleanSheets, coaches, management, players, standings, topScorers,
+  IMG, cleanSheets, coaches, management, players, standings, topScorers,
   type Player, type PositionGroup, type StaffMember,
 } from "../data/club";
 
@@ -20,12 +20,18 @@ const tabs = [
 function PageHeader() {
   const reduce = useReducedMotion();
   return (
-    <section className="relative pt-32 md:pt-40 pb-14 overflow-hidden border-b border-white/10 bg-coal">
-      <div className="floodlight" style={{ top: "-30vh", left: "30%" }} />
-      <div className="absolute right-[-4rem] top-6 opacity-[0.08] pointer-events-none select-none" aria-hidden="true">
+    <section className="relative pt-36 md:pt-44 pb-14 overflow-hidden border-b border-white/10 bg-coal">
+      {/* фоновое изображение + тёмный overlay для читаемости */}
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <img src={IMG.hero} alt="" className="w-full h-full object-cover opacity-55" />
+        <div className="absolute inset-0 bg-gradient-to-b from-void/90 via-void/75 to-void" />
+        <div className="absolute inset-0 bg-gradient-to-r from-void/85 via-void/50 to-void/75" />
+      </div>
+      <div className="floodlight" style={{ top: "-30vh", left: "30%", zIndex: 1 }} />
+      <div className="absolute right-[-4rem] top-6 opacity-[0.08] pointer-events-none select-none z-0" aria-hidden="true">
         <ClubLogo className="w-[380px] h-[380px]" />
       </div>
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <span className="line-mask">
           <motion.span
             initial={reduce ? undefined : { y: "115%" }}
@@ -81,7 +87,7 @@ function AnchorBar() {
   };
 
   return (
-    <div className="sticky top-16 z-30 bg-void/95 border-b border-white/10">
+    <div className="sticky top-24 z-30 bg-void/95 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex gap-1 overflow-x-auto py-3 -mx-1 px-1">
           {tabs.map((t, i) => (

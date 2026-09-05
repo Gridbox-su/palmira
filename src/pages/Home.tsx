@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import ClubLogo from "../components/ClubLogo";
 import { Reveal, SectionHeading, SmokeTrails } from "../components/Reveal";
-import { IconArrow, IconArrowUpRight, IconPin, IconTicket, IconClock, IconCalendar } from "../components/icons";
+import { IconArrow, IconArrowUpRight, IconPin, IconTicket, IconClock, IconCalendar, IconBall } from "../components/icons";
 import { IMG, clubMilestones, importantMoments, matches, news, upcomingMatches, type UpcomingMatch } from "../data/club";
 import { useTickets } from "../context";
 
@@ -33,7 +33,6 @@ function useCountdown() {
 
 /* ================= HERO ================= */
 function Hero() {
-  const openTickets = useTickets();
   const reduce = useReducedMotion();
 
   const line = (text: string, delay: number) => (
@@ -106,14 +105,14 @@ function Hero() {
           transition={{ delay: 1.05, duration: 0.8 }}
           className="mt-12"
         >
-          <button
-            onClick={openTickets}
+          <Link
+            to="/matches"
             className="group flex items-center gap-3 bg-neon text-white font-display uppercase tracking-[0.18em] text-sm px-10 py-4.5 hover:bg-[#e01f5c] transition-colors duration-300"
           >
-            <IconTicket className="w-5 h-5" />
-            Купить билет
+            <IconBall className="w-5 h-5" />
+            Ближайшие игры
             <IconArrow className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </button>
+          </Link>
         </motion.div>
       </div>
 

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import ClubLogo from "./ClubLogo";
-import { VkIcon, TelegramIcon, IconTicket, IconMenu, IconClose } from "./icons";
-import { useTickets } from "../context";
+import { VkIcon, TelegramIcon, IconPhone, IconMenu, IconClose, IconCheck } from "./icons";
 
 const links = [
   { to: "/", label: "Главная", end: true },
@@ -16,8 +15,26 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [callOpen, setCallOpen] = useState(false);
+  const [callSent, setCallSent] = useState(false);
+  const [callError, setCallError] = useState("");
+  const [callForm, setCallForm] = useState({ name: "", phone: "" });
   const location = useLocation();
-  const openTickets = useTickets();
+
+  const submitCall = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!callForm.name.trim() || !callForm.phone.trim()) {
+      setCallError("Заполните имя и номер телефона.");
+      return;
+    }
+    setCallError("");
+    setCallSent(true);
+    setTimeout(() => {
+      setCallOpen(false);
+      setCallSent(false);
+      setCallForm({ name: "", phone: "" });
+    }, 2600);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -80,11 +97,14 @@ export default function Navbar() {
                 </a>
               </div>
               <button
-                onClick={openTickets}
-                className="hidden sm:flex items-center gap-2 bg-neon text-white font-display uppercase tracking-[0.14em] text-[13px] px-5 py-2.5 transition-colors duration-300 hover:bg-[#e01f5c]"
+                onClick={() => setCallOpen((v) => !v)}
+                aria-expanded={callOpen}
+                className={`hidden sm:flex items-center gap-2 font-display uppercase tracking-[0.14em] text-[13px] px-5 py-2.5 transition-colors duration-300 ${
+                  callOpen ? "bg-white text-neon" : "bg-neon text-white hover:bg-[#e01f5c]"
+                }`}
               >
-                <IconTicket className="w-4 h-4" />
-                Купить билет
+                <IconPhone className="w-4 h-4" />
+                Заказать звонок
               </button>
               <button
                 onClick={() => setOpen(!open)}
@@ -96,6 +116,69 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+
+        {/* Мини-форма «Заказать звонок» */}
+        <AnimatePresence>
+          {callOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute top-full mt-2 right-4 sm:right-6 lg:right-8 z-[60] w-[calc(100vw-2rem)] max-w-[320px] bg-coal border border-white/15 p-5"
+            >
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-display uppercase tracking-[0.18em] text-sm">Заказать звонок</span>
+                <button
+                  onClick={() => setCallOpen(false)}
+                  aria-label="Закрыть форму"
+                  className="w-8 h-8 grid place-items-center bg-white/10 text-steel hover:bg-neon hover:text-white transition-colors"
+                >
+                  <IconClose className="w-3.5 h-3.5" />
+                </button>
+              </div>
+
+              {callSent ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex items-center gap-3 border border-neon bg-neon/10 px-3.5 py-3.5 text-[13px] text-neon"
+                >
+                  <IconCheck className="w-5 h-5 shrink-0" />
+                  Заявка принята — перезвоним в течение 15 минут.
+                </motion.div>
+              ) : (
+                <form onSubmit={submitCall} className="space-y-3">
+                  <input
+                    className="field"
+                    placeholder="Имя"
+                    value={callForm.name}
+                    onChange={(e) => { setCallForm((f) => ({ ...f, name: e.target.value })); setCallError(""); }}
+                    aria-label="Имя"
+                  />
+                  <input
+                    className="field"
+                    placeholder="Номер телефона"
+                    value={callForm.phone}
+                    onChange={(e) => { setCallForm((f) => ({ ...f, phone: e.target.value })); setCallError(""); }}
+                    aria-label="Номер телефона"
+                  />
+                  {callError && <p className="text-xs text-neon">{callError}</p>}
+                  <button
+                    type="submit"
+                    className="w-full bg-neon text-white font-display uppercase tracking-[0.18em] text-xs py-3 hover:bg-[#e01f5c] transition-colors"
+                  >
+                    Отправить
+                  </button>
+                  <p className="text-[10px] text-steel/70 leading-relaxed">
+                    Менеджер клуба свяжется с вами в рабочее время (10:00–19:00 МСК).
+                  </p>
+                </form>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* Мобильное меню */}
@@ -144,11 +227,11 @@ export default function Navbar() {
               <button
                 onClick={() => {
                   setOpen(false);
-                  openTickets();
+                  setCallOpen(true);
                 }}
-                className="flex items-center justify-center gap-2 bg-neon text-white font-display uppercase tracking-[0.2em] px-6 py-4"
+                className="flex items-center justify-center gap-2 bg-neon text-white font-display uppercase tracking-[0.2em] px-6 py-4 hover:bg-[#e01f5c] transition-colors"
               >
-                <IconTicket className="w-5 h-5" /> Купить билет
+                <IconPhone className="w-5 h-5" /> Заказать звонок
               </button>
               <div className="flex items-center gap-3">
                 <a href="https://vk.com" target="_blank" rel="noreferrer" aria-label="ВКонтакте" className="w-11 h-11 grid place-items-center bg-neon text-white hover:bg-white hover:text-neon transition-colors">

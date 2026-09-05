@@ -70,8 +70,8 @@ function Hero() {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
           className="relative mb-10"
         >
-          <div className="absolute inset-0 -m-8 bg-neon/15 blur-3xl" aria-hidden="true" />
-          <ClubLogo className="relative w-32 h-32 sm:w-40 sm:h-40" detailed />
+          <div className="absolute inset-0 -m-10 bg-neon/15 blur-3xl" aria-hidden="true" />
+          <ClubLogo className="relative w-[220px] h-[220px] sm:w-[280px] sm:h-[280px]" detailed />
         </motion.div>
 
         <motion.p
@@ -147,7 +147,6 @@ function Hero() {
 
 /* ================= МАТЧ-ЦЕНТР ================= */
 function MatchCenter() {
-  const openTickets = useTickets();
   const cd = useCountdown();
   const derby = matches.find((m) => m.id === 2)!;
 
@@ -243,7 +242,7 @@ function MatchCenter() {
 
         <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
           {upcomingMatches.map((m) => (
-            <UpcomingCard key={m.id} m={m} onTickets={openTickets} />
+            <UpcomingCard key={m.id} m={m} />
           ))}
         </div>
       </div>
@@ -252,9 +251,9 @@ function MatchCenter() {
 }
 
 /* ---------- карточка ближайшего матча ---------- */
-function UpcomingCard({ m, onTickets }: { m: UpcomingMatch; onTickets: () => void }) {
+function UpcomingCard({ m }: { m: UpcomingMatch }) {
   return (
-    <div className="bg-coal border border-white/10 p-5 flex flex-col gap-4 transition-colors duration-300 hover:border-neon">
+    <div className="bg-coal border border-white/10 px-5 pt-5 pb-6 flex flex-col gap-4 transition-colors duration-300 hover:border-neon">
       <div className="text-[10px] uppercase tracking-[0.16em] font-semibold text-steel">{m.competition}</div>
 
       <div className="flex items-center gap-4">
@@ -279,13 +278,6 @@ function UpcomingCard({ m, onTickets }: { m: UpcomingMatch; onTickets: () => voi
         <IconPin className="w-3.5 h-3.5 shrink-0 text-steel" />
         {m.stadium}
       </div>
-
-      <button
-        onClick={onTickets}
-        className="mt-auto flex items-center justify-center gap-2 bg-neon text-white font-display uppercase tracking-[0.16em] text-xs py-3 hover:bg-[#e01f5c] transition-colors duration-300"
-      >
-        <IconTicket className="w-4 h-4" /> Купить билет
-      </button>
     </div>
   );
 }
@@ -378,8 +370,8 @@ function Overview() {
 
 /* ================= НОВОСТИ ================= */
 function News() {
-  const featured = news[0];
-  const rest = news.slice(1, 5);
+  /* ровно 6 новостей: 2 ряда по 3 карточки */
+  const items = news.slice(0, 6);
 
   return (
     <section className="relative py-24 bg-void">
@@ -394,61 +386,36 @@ function News() {
           }
         />
 
-        {/* Главная новость */}
-        <Reveal className="mt-12">
-          <Link to="/media" className="group grid lg:grid-cols-2 border border-white/10 bg-coal overflow-hidden transition-colors duration-300 hover:border-neon">
-            <div className="relative overflow-hidden">
-              <img
-                src={featured.image}
-                alt={featured.title}
-                className="w-full h-64 sm:h-80 lg:h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-void/70 via-transparent to-transparent lg:bg-gradient-to-r" />
-              <span className="absolute top-4 left-4 bg-neon text-white text-[10px] font-bold uppercase tracking-[0.14em] px-2.5 py-1">
-                {featured.category}
-              </span>
-            </div>
-            <div className="p-7 sm:p-10 flex flex-col justify-center">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-steel">{featured.date} · Главное</span>
-              <h3 className="font-display uppercase font-semibold text-2xl sm:text-3xl md:text-4xl leading-[1.05] mt-4 group-hover:text-neon transition-colors duration-300">
-                {featured.title}
-              </h3>
-              <p className="text-sm sm:text-[15px] text-steel mt-5 leading-relaxed max-w-xl">{featured.excerpt}</p>
-              <div className="mt-7 flex items-center gap-2 font-display uppercase tracking-[0.18em] text-xs text-neon">
-                Читать полностью
-                <IconArrow className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1.5" />
-              </div>
-            </div>
-          </Link>
-        </Reveal>
-
-        {/* сетка 2x2 */}
-        <div className="mt-6 grid sm:grid-cols-2 gap-6">
-          {rest.map((n, i) => (
-            <Reveal key={n.id} delay={(i % 2) * 0.08}>
+        {/* сетка 3×2 */}
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          {items.map((n, i) => (
+            <Reveal key={n.id} delay={(i % 3) * 0.07} className="h-full">
               <Link
                 to="/media"
-                className="group grid grid-cols-[120px_1fr] sm:grid-cols-[160px_1fr] border border-white/10 bg-coal overflow-hidden h-full transition-colors duration-300 hover:border-neon"
+                className="group flex flex-col border border-white/10 bg-coal overflow-hidden h-full transition-colors duration-300 hover:border-neon"
               >
-                <div className="relative overflow-hidden">
+                <div className="relative overflow-hidden shrink-0">
                   <img
                     src={n.image}
                     alt={n.title}
                     loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="w-full aspect-[16/10] object-cover transition-transform duration-700 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent" />
+                  <span className="absolute top-3 left-3 bg-neon text-white text-[9px] font-bold uppercase tracking-[0.14em] px-2 py-1">
+                    {n.category}
+                  </span>
+                  <span className="absolute bottom-2.5 right-3 text-[9px] uppercase tracking-[0.16em] text-white/75">
+                    {n.date}
+                  </span>
                 </div>
-                <div className="p-4 sm:p-5 flex flex-col">
-                  <div className="flex items-center gap-3 text-[9px] uppercase tracking-[0.16em]">
-                    <span className="bg-white/10 text-white/80 px-2 py-0.5">{n.category}</span>
-                    <span className="text-steel">{n.date}</span>
-                  </div>
-                  <h3 className="font-display uppercase font-semibold text-[15px] sm:text-base leading-snug mt-3 group-hover:text-neon transition-colors duration-300">
+                <div className="p-5 flex flex-col flex-1">
+                  <h3 className="font-display uppercase font-semibold text-base leading-snug line-clamp-2 group-hover:text-neon transition-colors duration-300">
                     {n.title}
                   </h3>
-                  <p className="hidden sm:block text-xs text-steel mt-2.5 leading-relaxed line-clamp-2">{n.excerpt}</p>
-                  <div className="mt-auto pt-3 flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-steel group-hover:text-neon transition-colors duration-300">
-                    Читать <IconArrow className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
+                  <p className="text-xs text-steel mt-3 leading-relaxed line-clamp-3">{n.excerpt}</p>
+                  <div className="mt-auto pt-4 flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-steel group-hover:text-neon transition-colors duration-300">
+                    Читать далее <IconArrow className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>
               </Link>

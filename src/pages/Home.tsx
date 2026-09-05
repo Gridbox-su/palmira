@@ -62,7 +62,7 @@ function Hero() {
       <SmokeTrails count={5} />
 
       {/* контент */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-44 pb-24">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-4 pt-80 pb-24">
         <motion.div
           initial={reduce ? undefined : { opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}

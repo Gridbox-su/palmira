@@ -2,12 +2,33 @@ import { useEffect, useState } from "react";
 import { NavLink, Link, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import ClubLogo from "./ClubLogo";
-import { VkIcon, TelegramIcon, IconPhone, IconMenu, IconClose, IconCheck } from "./icons";
+import { VkIcon, TelegramIcon, IconPhone, IconMenu, IconClose, IconCheck, IconChevron } from "./icons";
 
-const links = [
+type NavChild = { to: string; label: string };
+type NavItem = { to: string; label: string; end?: boolean; children?: NavChild[] };
+
+const navItems: NavItem[] = [
   { to: "/", label: "Главная", end: true },
-  { to: "/about", label: "О команде" },
-  { to: "/academy", label: "Детская школа" },
+  {
+    to: "/about",
+    label: "О команде",
+    children: [
+      { to: "/about#mgmt", label: "Руководство" },
+      { to: "/about#staff", label: "Тренерский штаб" },
+      { to: "/about#roster", label: "Состав" },
+      { to: "/about#stats", label: "Статистика игроков" },
+    ],
+  },
+  {
+    to: "/academy",
+    label: "Детская школа",
+    children: [
+      { to: "/academy#coaches", label: "Тренерский состав" },
+      { to: "/academy#schedule", label: "Расписания" },
+      { to: "/academy#register", label: "Запись на тренировку" },
+      { to: "/academy#branches", label: "Филиалы" },
+    ],
+  },
   { to: "/media", label: "Медиа" },
   { to: "/contacts", label: "Контакты" },
 ];
@@ -45,7 +66,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setOpen(false);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -73,12 +94,33 @@ export default function Navbar() {
               <ClubLogo className="object-contain h-[60px] w-auto" />
             </Link>
 
-            {/* Навигация (desktop) */}
-            <nav className="hidden lg:flex items-center gap-8">
-              {links.map((l) => (
-                <NavLink key={l.to} to={l.to} end={l.end} className={linkClass}>
-                  {l.label}
-                </NavLink>
+            {/* Навигация (desktop) с выпадающими подменю */}
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-7">
+              {navItems.map((item) => (
+                <div key={item.to} className="nav-item h-20 flex items-center">
+                  <NavLink to={item.to} end={item.end} className={linkClass}>
+                    <span className="flex items-center gap-1.5">
+                      {item.label}
+                      {item.children && <IconChevron className="chev w-3 h-3 text-neon" />}
+                    </span>
+                  </NavLink>
+                  {item.children && (
+                    <div className="dropdown-panel">
+                      <div className="dropdown-inner py-2">
+                        {item.children.map((c) => (
+                          <Link
+                            key={c.to}
+                            to={c.to}
+                            onClick={(e) => e.stopPropagation()}
+                            className="dropdown-link block px-5 py-2.5 font-display uppercase tracking-[0.14em] text-[12px] text-white/75 hover:text-white hover:bg-white/[0.04] hover:pl-6 transition-all duration-200"
+                          >
+                            {c.label}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </nav>
 
@@ -191,26 +233,39 @@ export default function Navbar() {
               <div className="smoke-trail" style={{ top: "20%", width: "60%", animationDuration: "14s" }} />
               <div className="smoke-trail" style={{ top: "60%", width: "45%", animationDuration: "18s", animationDelay: "3s" }} />
             </div>
-            <nav className="flex-1 flex flex-col justify-center px-8 gap-2">
-              {links.map((l, i) => (
+            <nav className="flex-1 flex flex-col justify-center px-8 gap-1.5 overflow-y-auto py-6">
+              {navItems.map((item, i) => (
                 <motion.div
-                  key={l.to}
+                  key={item.to}
                   initial={{ opacity: 0, x: -40 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.08 * i + 0.1, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <NavLink
-                    to={l.to}
-                    end={l.end}
+                    to={item.to}
+                    end={item.end}
                     className={({ isActive }) =>
-                      `block font-display uppercase font-semibold text-4xl sm:text-5xl tracking-tight py-3 border-b border-white/10 transition-colors ${
+                      `block font-display uppercase font-semibold text-3xl sm:text-4xl tracking-tight py-2.5 border-b border-white/10 transition-colors ${
                         isActive ? "text-neon" : "text-white hover:text-neon"
                       }`
                     }
                   >
-                    <span className="text-neon/60 font-normal text-lg mr-4 align-middle">0{i + 1}</span>
-                    {l.label}
+                    <span className="text-neon/60 font-normal text-base mr-4 align-middle">0{i + 1}</span>
+                    {item.label}
                   </NavLink>
+                  {item.children && (
+                    <div className="border-l-2 border-neon/50 ml-2 mt-2 mb-3 pl-4 flex flex-col gap-1">
+                      {item.children.map((c) => (
+                        <Link
+                          key={c.to}
+                          to={c.to}
+                          className="font-display uppercase tracking-[0.16em] text-sm text-white/65 hover:text-neon transition-colors py-1.5"
+                        >
+                          {c.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </motion.div>
               ))}
             </nav>

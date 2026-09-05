@@ -180,6 +180,67 @@ input, select, textarea { outline: none; }
 select.field option { background: #141414; color: #fff; }
 input[type="date"].field::-webkit-calendar-picker-indicator { filter: invert(1); opacity: 0.6; cursor: pointer; }
 
+/* ---------- многоуровневое меню (hover-dropdown) ---------- */
+.nav-item {
+  position: relative;
+}
+.nav-item .dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: -16px;
+  padding-top: 12px; /* «мост» наведения — меню не закрывается при движении курсора */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+  z-index: 80;
+}
+.nav-item:hover .dropdown-panel,
+.nav-item:focus-within .dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.dropdown-inner {
+  min-width: 260px;
+  background: #141414;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  position: relative;
+}
+.dropdown-inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #ff2a6d, rgba(255, 42, 109, 0));
+}
+.nav-item .chev {
+  transition: transform 0.25s ease;
+}
+.nav-item:hover .chev,
+.nav-item:focus-within .chev {
+  transform: rotate(90deg);
+}
+.dropdown-link {
+  position: relative;
+}
+.dropdown-link::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #ff2a6d;
+  transform: scaleY(0);
+  transition: transform 0.2s ease;
+}
+.dropdown-link:hover::before {
+  transform: scaleY(1);
+}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

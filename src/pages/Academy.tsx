@@ -303,7 +303,7 @@ export default function Academy() {
       <AcademyHero goForm={goForm} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="py-20">
+        <section id="coaches" className="py-20 scroll-mt-28">
           <SectionHeading kicker="Тренеры академии" title="Методика «Пальмира-Метод»" />
           <div className="mt-10 grid sm:grid-cols-2 xl:grid-cols-4 gap-5">
             {youthCoaches.map((c, i) => (
@@ -345,18 +345,18 @@ export default function Academy() {
           </div>
         </section>
 
-        <section className="py-20 border-t border-white/10">
+        <section id="branches" className="py-20 border-t border-white/10 scroll-mt-28">
           <SectionHeading kicker="Филиалы" title="Где мы тренируемся" />
           <Branches />
         </section>
 
-        <section className="py-20 border-t border-white/10">
+        <section id="schedule" className="py-20 border-t border-white/10 scroll-mt-28">
           <SectionHeading kicker="Расписание" title="Тренировки по возрастам" />
           <Schedule />
         </section>
 
         <section className="py-20 border-t border-white/10">
-          <div ref={formRef} className="scroll-mt-32">
+          <div ref={formRef} id="register" className="scroll-mt-28">
             <SectionHeading kicker="Регистрация" title="Запишите ребёнка на тренировку" />
             <div className="mt-10 grid lg:grid-cols-[1fr_320px] gap-8 items-start">
               <RegistrationForm />
